@@ -5,11 +5,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Stabilize extends CommandBase{
+    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+    private final DrivetrainSubsystem drivetrainSubsystem;
 
     public Stabilize(){
-
-
-        
+    this.drivetrainSubsystem = new DrivetrainSubsystem();
+    addRequirements(drivetrainSubsystem);
     }
     
     // Called when the command is initially scheduled.
@@ -24,37 +25,32 @@ public class Stabilize extends CommandBase{
     @Override
     public void execute() {
 
-        double xRotation = DrivetrainSubsystem.navX.getRoll();
+        float xRotation = DrivetrainSubsystem.navX.getRoll();
+        System.out.println(xRotation);
 
-        System.out.println("Pitch: " + xRotation);
-        System.out.println("Yaw: " + DrivetrainSubsystem.navX.getYaw());
-        System.out.println("Roll: " + DrivetrainSubsystem.navX.getRoll());
+        // System.out.println("Pitch: " + xRotation);
+        // System.out.println("Yaw: " + DrivetrainSubsystem.navX.getYaw());
+        // System.out.println("Roll: " + DrivetrainSubsystem.navX.getRoll());
 
 
-        if (xRotation < 45 && xRotation > 5){
+        if (xRotation < 30 && xRotation > 5){
 
-            DrivetrainSubsystem.leftFrontMotor.set(0.2);
-            DrivetrainSubsystem.leftBackMotor.set(0.2);
-            DrivetrainSubsystem.rightFrontMotor.set(-0.2);
-            DrivetrainSubsystem.rightBackMotor.set(-0.2);
+            System.out.println(1.0);
+            drivetrainSubsystem.arcadeDrive(-2.0, 0.0);
 
         }
 
-        if (xRotation > -45 && xRotation < -5){
+        if (xRotation > -30 && xRotation < -5){
 
-            DrivetrainSubsystem.leftFrontMotor.set(0.2);
-            DrivetrainSubsystem.leftBackMotor.set(0.2);
-            DrivetrainSubsystem.rightFrontMotor.set(0.2);
-            DrivetrainSubsystem.rightBackMotor.set(0.2);
+            System.out.println(2.0);
+            drivetrainSubsystem.arcadeDrive(2.0, 0.0);
 
         }
 
         if (xRotation > -3 && xRotation < 3){
 
-            DrivetrainSubsystem.leftFrontMotor.set(0);
-            DrivetrainSubsystem.leftBackMotor.set(0);
-            DrivetrainSubsystem.rightFrontMotor.set(0);
-            DrivetrainSubsystem.rightBackMotor.set(0);
+            System.out.println(3.0);
+            drivetrainSubsystem.arcadeDrive(0.0, 0.0);
 
         }
 

@@ -112,6 +112,11 @@ public class Robot extends TimedRobot {
       stabilize.execute();
 
     }
+    
+    if (RobotContainer.joystick.getRawButtonPressed(4));{
+      System.out.println(4.0);
+      pneumatic.getPotentiometerAngle();
+    }
 
   }
 

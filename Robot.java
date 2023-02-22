@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +29,13 @@ public class Robot extends TimedRobot {
   private Stabilize stabilize = new Stabilize();
 
   private RobotContainer m_robotContainer;
+  
+  UsbCamera camera1;
+  UsbCamera camera2;
+  private int cameraNum = 1;
+  VideoSink server;
+  NetworkTableEntry cameraSelection;
+  Joystick controller;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -33,6 +46,14 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    
+    camera1 = CameraServer.startAutomaticCapture(0);
+    camera2 = CameraServer.startAutomaticCapture(1);
+
+    camera1.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    camera2.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+
+    cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
   }
 
   /**
@@ -117,7 +138,19 @@ public class Robot extends TimedRobot {
       System.out.println(4.0);
       pneumatic.getPotentiometerAngle();
     }
-
+    
+    if (RobotContainer.joyStick.getRawButtonPressed(1)) {
+      if (cameraNum == 1){
+      System.out.println("Setting camera 2");
+      cameraSelection.setString(camera2.getName());
+      cameraNum = 2;
+      }
+      else if (cameraNum == 2){
+        System.out.println("Setting camera 1");
+        cameraSelection.setString(camera1.getName());
+        cameraNum = 1;
+      }
+    } 
   }
 
   @Override
